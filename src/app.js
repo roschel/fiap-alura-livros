@@ -18,7 +18,13 @@ app.get("/livros", (req, res) => {
 });
 
 app.get("/livros/:id", (req, res) => {
-  let index = buscaLivro(req.params.id);
+  let { id } = req.params;
+
+  let index = buscaLivro(id);
+
+  if (index == -1) {
+    return res.status(404).send(`Livro ${id} não encontrado`);
+  }
   res.status(201).json(livros[index]);
 });
 
@@ -36,6 +42,13 @@ app.put("/livros/:id", (req, res) => {
   livros[index].titulo = req.body.titulo;
 
   res.status(201).json(livros);
+});
+
+app.delete("/livros/:id", (req, res) => {
+  let { id } = req.params;
+  let index = buscaLivro(id);
+  livros.splice(index, 1);
+  res.send(`Livro ${id} removido com sucesso`);
 });
 
 function buscaLivro(id) {
