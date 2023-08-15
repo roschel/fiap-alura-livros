@@ -25,14 +25,6 @@ app.get("/livros/:id", async (req, res) => {
   res.status(201).json(livro);
 });
 
-app.post("/livros", (req, res) => {
-  livros.push(req.body);
-
-  console.log(livros);
-
-  res.status(201).send("ok");
-});
-
 app.put("/livros/:id", (req, res) => {
   let index = buscaLivro(req.params.id);
 
