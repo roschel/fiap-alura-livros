@@ -10,7 +10,7 @@ class LivroController {
   static listarLivroPorId = (req, res) => {
     const id = req.params.id;
     livros.findById(id, (err, livros) => {
-      if (err) {
+      if (err || !livros) {
         res.status(404).send({ message: `Livro ${id} não encontrado` });
       } else {
         res.status(200).send(livros.toJSON());
@@ -41,6 +41,20 @@ class LivroController {
         res
           .status(500)
           .send({ message: `${err.message} - falha ao atualizar livro` });
+      }
+    });
+  };
+
+  static excluirLivro = (req, res) => {
+    const id = req.params.id;
+
+    livros.findByIdAndDelete(id, (err) => {
+      if (!err) {
+        res.status(200).send({ message: "Livro excluido com sucesso" });
+      } else {
+        res
+          .status(500)
+          .send({ message: `${err.message} - falha ao excluir livro` });
       }
     });
   };
