@@ -14,25 +14,6 @@ app.use(express.json());
 
 routes(app);
 
-app.get("/livros/:id", async (req, res) => {
-  let { id } = req.params;
-
-  let livro = await livros.findById(id);
-
-  if (!livro) {
-    return res.status(404).send(`Livro ${id} não encontrado`);
-  }
-  res.status(201).json(livro);
-});
-
-app.put("/livros/:id", (req, res) => {
-  let index = buscaLivro(req.params.id);
-
-  livros[index].titulo = req.body.titulo;
-
-  res.status(201).json(livros);
-});
-
 app.delete("/livros/:id", (req, res) => {
   let { id } = req.params;
   let index = buscaLivro(id);
