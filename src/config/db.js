@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 mongoose.connect(
-  "mongodb+srv://joaomroschel:52naAk1KJq9iqfdc@warm-up-node-express.ahdcahz.mongodb.net/alura-node?retryWrites=true&w=majority&tlsAllowInvalidCertificates=true"
+  `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@warm-up-node-express.ahdcahz.mongodb.net/alura-node?retryWrites=true&w=majority&tlsAllowInvalidCertificates=true`
 );
 
 let db = mongoose.connection;
