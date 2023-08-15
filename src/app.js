@@ -1,31 +1,35 @@
 import express from "express";
+import db from "./config/db.js";
+import livros from "./models/Livro.js";
+
+db.on("error", console.log.bind(console, "Erro do mongo"));
+db.once("open", () => {
+  console.log("Conexão com o banco feita com sucesso");
+});
 
 const app = express();
 
 app.use(express.json());
-
-const livros = [
-  { id: 1, titulo: "O Senhor dos Anéis" },
-  { id: 2, titulo: "O Hobbit" },
-];
 
 app.get("/", (req, res) => {
   res.status(200).send("Curso de Node");
 });
 
 app.get("/livros", (req, res) => {
-  res.status(200).send(livros);
+  livros.find((err, livros) => {
+    res.status(200).json(livros);
+  });
 });
 
-app.get("/livros/:id", (req, res) => {
+app.get("/livros/:id", async (req, res) => {
   let { id } = req.params;
 
-  let index = buscaLivro(id);
+  let livro = await livros.findById(id);
 
-  if (index == -1) {
+  if (!livro) {
     return res.status(404).send(`Livro ${id} não encontrado`);
   }
-  res.status(201).json(livros[index]);
+  res.status(201).json(livro);
 });
 
 app.post("/livros", (req, res) => {
